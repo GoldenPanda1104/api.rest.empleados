@@ -21,18 +21,16 @@ class EmpleadoController extends Controller
     
     public function store(Request $request){
 
-        $empleado = $request->validate(
-            [
+        $data = $request->validate([
                 'nombre' => 'required|string|max:255',
                 'apellido' => 'required|string|max:255',
                 'user_id' => 'required|exists:users,id',
                 'empresa_id' => 'required|exists:empresas,id',
                 'email' => 'nullable|string|max:255',
                 'telefono' => 'nullable|string|max:255',
-            ]
-        );
+            ]);
         
-        $empleado = Empleado::create($empleado);
+        $empleado = Empleado::create($data);
         return $empleado;
     }
 
