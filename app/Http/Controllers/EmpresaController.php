@@ -11,12 +11,12 @@ class EmpresaController extends Controller
     public function index()
     {
 
-        //$empresas = Empresa::with('empleados')->get();
-        //return $empresas;
+        $empresas = Empresa::with('empleados')->get();
+        return $empresas;
 
 
         
-        $empresas = Empresa::with('empleados')->whereHas('empleados', function (Builder $query) {
+        /*$empresas = Empresa::with('empleados')->whereHas('empleados', function (Builder $query) {
             if (empty($this->allowFilter)||empty(request('filter'))) {
                 return;
             }
@@ -30,7 +30,7 @@ class EmpresaController extends Controller
                 }
             }
         })->get();
-        return $empresas;
+        return $empresas;*/
         
          
     }
