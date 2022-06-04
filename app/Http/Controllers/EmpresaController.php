@@ -3,13 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empresa;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {
     public function index()
     {
-        return Empresa::all();
+
+        //$empresas = Empresa::with('empleados')->get();
+        //return $empresas;
+
+
+        
+        $empresas = Empresa::with('empleados')->whereHas('empleados', function (Builder $query) {
+            if (empty($this->allowFilter)||empty(request('filter'))) {
+                return;
+            }
+    
+            $filters = request('filter');
+            $allowFilter = collect($this->allowFilter);
+    
+            foreach ($filters as $filter => $value) {
+                if ($allowFilter->contains($filter)) {
+                    $query->where($filter, 'LIKE','%'.$value.'%');
+                }
+            }
+        })->get();
+        return $empresas;
+        
+         
     }
 
     public function show($id){
